@@ -13,5 +13,12 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "cloudflare-ipfs.com",
+      },
+    ],
+  },
 };
 export default config;
