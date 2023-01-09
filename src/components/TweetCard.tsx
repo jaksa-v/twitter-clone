@@ -1,5 +1,29 @@
 import { Prisma } from "@prisma/client";
 import Image from "next/image";
+import relativeTime from "dayjs/plugin/relativeTime";
+import updateLocal from "dayjs/plugin/updateLocale";
+import dayjs from "dayjs";
+
+dayjs.extend(relativeTime);
+dayjs.extend(updateLocal);
+
+dayjs.updateLocale("en", {
+  relativeTime: {
+    future: "in %s",
+    past: "%s",
+    s: "1m",
+    m: "1m",
+    mm: "%dm",
+    h: "1h",
+    hh: "%dh",
+    d: "1d",
+    dd: "%dd",
+    M: "1M",
+    MM: "%dM",
+    y: "1y",
+    yy: "%dy",
+  },
+});
 
 const tweetWithAuthor = Prisma.validator<Prisma.TweetArgs>()({
   include: { author: true },
@@ -21,7 +45,12 @@ export default function TweetCard({ tweet }: { tweet: TweetWithAuthor }) {
           />
         )}
         <div className="flex flex-col items-start justify-center">
-          <p className="font-semibold text-white">{tweet.author.name}</p>
+          <div className="flex items-center gap-4">
+            <p className="font-semibold text-white">{tweet.author.name}</p>
+            <p className="text-xs text-gray-400">
+              {dayjs(tweet.createdAt).fromNow()}
+            </p>
+          </div>
           <p className="text-sm text-gray-400">@{tweet.author.email}</p>
         </div>
       </div>

@@ -16,4 +16,6 @@
 - Comment schema
 - Seed the database ✔️
 - Navbar ✔️
-- Invalidate query upon post tweet mutation
+- Invalidate query upon post tweet mutation ✔️
+- Don't display create tweet to unauth users
+- Display relative time on tweet card ✔️
