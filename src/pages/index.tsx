@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import PostTweet from "../components/PostTweet";
 import TweetCard from "../components/TweetCard";
 // import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -17,6 +18,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-start justify-center gap-8 p-4 ">
+          <PostTweet />
           {tweets.data?.map((tweet) => (
             <TweetCard key={tweet.id} tweet={tweet} />
           ))}
