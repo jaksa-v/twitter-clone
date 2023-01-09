@@ -12,9 +12,11 @@ export const tweetSchema = object({
 });
 
 export default function PostTweet() {
+  const utils = api.useContext();
   const mutation = api.tweet.create.useMutation({
     onSuccess: () => {
       setErrors(undefined);
+      void utils.tweet.getAll.invalidate();
     },
   });
   const [errors, setErrors] = useState<ZodIssue[]>();

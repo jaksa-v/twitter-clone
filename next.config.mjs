@@ -18,6 +18,9 @@ const config = {
       {
         hostname: "cloudflare-ipfs.com",
       },
+      {
+        hostname: "cdn.discordapp.com",
+      },
     ],
   },
 };

@@ -8,6 +8,9 @@ export const tweetRouter = createTRPCRouter({
         author: true,
       },
       take: 10,
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   }),
   create: protectedProcedure.input(tweetSchema).mutation(({ ctx, input }) => {
