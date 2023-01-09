@@ -15,4 +15,4 @@
 - Like schema
 - Comment schema
 - Seed the database ✔️
-- Navbar
+- Navbar ✔️
