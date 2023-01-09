@@ -1,13 +1,34 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { type NextPage } from "next";
 import Head from "next/head";
+import { useEffect } from "react";
 import PostTweet from "../components/PostTweet";
 import TweetCard from "../components/TweetCard";
+import useScrollPosition from "../hooks/useScrollPosition";
 // import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "../utils/api";
 
 const Home: NextPage = () => {
-  const tweets = api.tweet.getAll.useQuery();
+  const scrollPosition = useScrollPosition();
+
+  const { data, hasNextPage, fetchNextPage, isFetching } =
+    api.tweet.list.useInfiniteQuery(
+      {
+        limit: 10,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      }
+    );
+
+  const tweets = data?.pages.flatMap((page) => page.tweets) ?? [];
+
+  useEffect(() => {
+    if (scrollPosition > 90 && hasNextPage && !isFetching) {
+      void fetchNextPage();
+    }
+  }, [scrollPosition, hasNextPage, isFetching, fetchNextPage]);
 
   return (
     <>
@@ -19,9 +40,12 @@ const Home: NextPage = () => {
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-start justify-center gap-8 p-4 ">
           <PostTweet />
-          {tweets.data?.map((tweet) => (
+          {tweets.map((tweet) => (
             <TweetCard key={tweet.id} tweet={tweet} />
           ))}
+          {!hasNextPage && (
+            <p className="text-sm text-gray-400">No more items to load</p>
+          )}
         </div>
       </main>
     </>
