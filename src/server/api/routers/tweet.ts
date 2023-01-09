@@ -17,7 +17,21 @@ export const tweetRouter = createTRPCRouter({
       const tweets = await prisma.tweet.findMany({
         take: limit + 1,
         include: {
-          author: true,
+          likes: {
+            where: {
+              userId: ctx.session?.user?.id,
+            },
+            select: {
+              userId: true,
+            },
+          },
+          author: {
+            select: {
+              name: true,
+              email: true,
+              image: true,
+            },
+          },
         },
         orderBy: {
           createdAt: "desc",
@@ -55,4 +69,52 @@ export const tweetRouter = createTRPCRouter({
       },
     });
   }),
+  like: protectedProcedure
+    .input(
+      z.object({
+        tweetId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const { prisma } = ctx;
+
+      const result = await prisma.like.create({
+        data: {
+          tweet: {
+            connect: {
+              id: input.tweetId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+
+      return result;
+    }),
+  unlike: protectedProcedure
+    .input(
+      z.object({
+        tweetId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const { prisma } = ctx;
+
+      const result = await prisma.like.delete({
+        where: {
+          tweetId_userId: {
+            tweetId: input.tweetId,
+            userId,
+          },
+        },
+      });
+
+      return result;
+    }),
 });

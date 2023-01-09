@@ -3,6 +3,8 @@ import Image from "next/image";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocal from "dayjs/plugin/updateLocale";
 import dayjs from "dayjs";
+import { HiHeart } from "react-icons/hi";
+import { api } from "../utils/api";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocal);
@@ -26,12 +28,20 @@ dayjs.updateLocale("en", {
 });
 
 const tweetWithAuthor = Prisma.validator<Prisma.TweetArgs>()({
-  include: { author: true },
+  include: {
+    author: { select: { name: true, email: true, image: true } },
+    likes: { select: { userId: true } },
+  },
 });
 
 type TweetWithAuthor = Prisma.TweetGetPayload<typeof tweetWithAuthor>;
 
 export default function TweetCard({ tweet }: { tweet: TweetWithAuthor }) {
+  const likeMutation = api.tweet.like.useMutation().mutateAsync;
+  const unlikeMutation = api.tweet.unlike.useMutation().mutateAsync;
+
+  const hasLiked = tweet.likes.length > 0;
+
   return (
     <div className="flex flex-col items-start justify-center gap-2">
       <div className="flex items-center justify-center gap-4">
@@ -56,6 +66,22 @@ export default function TweetCard({ tweet }: { tweet: TweetWithAuthor }) {
       </div>
       <div>
         <p className="text-white">{tweet.text}</p>
+      </div>
+      <div className="flex">
+        <div className="flex">
+          <HiHeart
+            className={hasLiked ? "text-red-500" : "text-gray-400"}
+            size="1.5rem"
+            onClick={() => {
+              if (hasLiked) {
+                void unlikeMutation({ tweetId: tweet.id });
+              } else {
+                void likeMutation({ tweetId: tweet.id });
+              }
+            }}
+          />
+          <span className="text-gray-400">10</span>
+        </div>
       </div>
     </div>
   );
