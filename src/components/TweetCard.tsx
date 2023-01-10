@@ -1,9 +1,9 @@
-import { Prisma } from "@prisma/client";
 import Image from "next/image";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocal from "dayjs/plugin/updateLocale";
 import dayjs from "dayjs";
 import { HiHeart } from "react-icons/hi";
+import type { RouterOutputs } from "../utils/api";
 import { api } from "../utils/api";
 
 dayjs.extend(relativeTime);
@@ -27,16 +27,9 @@ dayjs.updateLocale("en", {
   },
 });
 
-const tweetWithAuthor = Prisma.validator<Prisma.TweetArgs>()({
-  include: {
-    author: { select: { name: true, email: true, image: true } },
-    likes: { select: { userId: true } },
-  },
-});
+type Tweet = RouterOutputs["tweet"]["list"]["tweets"][0];
 
-type TweetWithAuthor = Prisma.TweetGetPayload<typeof tweetWithAuthor>;
-
-export default function TweetCard({ tweet }: { tweet: TweetWithAuthor }) {
+export default function TweetCard({ tweet }: { tweet: Tweet }) {
   const utils = api.useContext();
 
   const likeMutation = api.tweet.like.useMutation({
