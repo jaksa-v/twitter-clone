@@ -37,8 +37,18 @@ const tweetWithAuthor = Prisma.validator<Prisma.TweetArgs>()({
 type TweetWithAuthor = Prisma.TweetGetPayload<typeof tweetWithAuthor>;
 
 export default function TweetCard({ tweet }: { tweet: TweetWithAuthor }) {
-  const likeMutation = api.tweet.like.useMutation().mutateAsync;
-  const unlikeMutation = api.tweet.unlike.useMutation().mutateAsync;
+  const utils = api.useContext();
+
+  const likeMutation = api.tweet.like.useMutation({
+    onSuccess: () => {
+      void utils.tweet.list.invalidate();
+    },
+  }).mutateAsync;
+  const unlikeMutation = api.tweet.unlike.useMutation({
+    onSuccess: () => {
+      void utils.tweet.list.invalidate();
+    },
+  }).mutateAsync;
 
   const hasLiked = tweet.likes.length > 0;
 
