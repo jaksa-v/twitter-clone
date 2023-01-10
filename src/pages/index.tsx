@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
+import { useQueryClient } from "@tanstack/react-query";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -30,6 +31,8 @@ const Home: NextPage = () => {
     }
   }, [scrollPosition, hasNextPage, isFetching, fetchNextPage]);
 
+  const client = useQueryClient();
+
   return (
     <>
       <Head>
@@ -41,7 +44,7 @@ const Home: NextPage = () => {
         <div className="container flex flex-col items-start justify-center gap-8 p-4 ">
           <PostTweet />
           {tweets.map((tweet) => (
-            <TweetCard key={tweet.id} tweet={tweet} />
+            <TweetCard key={tweet.id} tweet={tweet} client={client} />
           ))}
           {!hasNextPage && (
             <p className="text-sm text-gray-400">No more items to load</p>

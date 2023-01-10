@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { HiHeart } from "react-icons/hi";
 import type { RouterOutputs } from "../utils/api";
 import { api } from "../utils/api";
+import type { InfiniteData, QueryClient } from "@tanstack/react-query";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocal);
@@ -29,17 +30,72 @@ dayjs.updateLocale("en", {
 
 type Tweet = RouterOutputs["tweet"]["list"]["tweets"][0];
 
-export default function TweetCard({ tweet }: { tweet: Tweet }) {
-  const utils = api.useContext();
+function updateCache({
+  client,
+  variables,
+  data,
+  action,
+}: {
+  client: QueryClient;
+  variables: {
+    tweetId: string;
+  };
+  data: {
+    userId: string;
+  };
+  action: "like" | "unlike";
+}) {
+  client.setQueryData(
+    [
+      ["tweet", "list"],
+      {
+        input: {
+          limit: 10,
+        },
+        type: "infinite",
+      },
+    ],
+    (oldData) => {
+      const newData = oldData as InfiniteData<RouterOutputs["tweet"]["list"]>;
 
+      const newTweets = newData.pages.map((page) => {
+        return {
+          tweets: page.tweets.map((tweet) => {
+            if (tweet.id === variables.tweetId) {
+              return {
+                ...tweet,
+                likes: action === "like" ? [data.userId] : [],
+              };
+            }
+
+            return tweet;
+          }),
+        };
+      });
+
+      return {
+        ...newData,
+        pages: newTweets,
+      };
+    }
+  );
+}
+
+export default function TweetCard({
+  tweet,
+  client,
+}: {
+  tweet: Tweet;
+  client: QueryClient;
+}) {
   const likeMutation = api.tweet.like.useMutation({
-    onSuccess: () => {
-      void utils.tweet.list.invalidate();
+    onSuccess: (data, variables) => {
+      updateCache({ client, data, variables, action: "like" });
     },
   }).mutateAsync;
   const unlikeMutation = api.tweet.unlike.useMutation({
-    onSuccess: () => {
-      void utils.tweet.list.invalidate();
+    onSuccess: (data, variables) => {
+      updateCache({ client, data, variables, action: "unlike" });
     },
   }).mutateAsync;
 
