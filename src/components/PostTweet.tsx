@@ -37,7 +37,10 @@ export default function PostTweet() {
 
   return (
     <>
-      <form className="flex w-full flex-col gap-2" onSubmit={handleSubmit}>
+      <form
+        className="flex w-full flex-col gap-2 border-x border-b border-gray-600 p-4"
+        onSubmit={handleSubmit}
+      >
         {errors?.map((error) => (
           <p key={error.message}>{error.message}</p>
         ))}
