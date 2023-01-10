@@ -6,11 +6,11 @@
 
 ## Todos
 
-- Add borders on tweet cards
 - Don't display create tweet to unauth users
-- Add Sign in/Sign out in Navbar
 - Signed out banner
 - Handle unatuhorized error when liking unsigned
+- Loading states on home page
+- Modal for authentication
 
 ## Bugs
 
