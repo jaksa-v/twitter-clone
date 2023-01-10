@@ -7,8 +7,14 @@
 ## Todos
 
 - Don't display create tweet to unauth users
-- Design for desktop
-- Implement some other authentication
+- Design for desktop ✔️
+- Add borders on tweet cards
+- Implement Google authentication
+- Add Sign in/Sign out in Navbar
+- Signed out banner
+- Handle unatuhorized error when liking unsigned
 - Deploy MVP
 
 ## Bugs
+
+✔️

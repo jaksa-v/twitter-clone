@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import PostTweet from "../components/PostTweet";
 import TweetCard from "../components/TweetCard";
 import useScrollPosition from "../hooks/useScrollPosition";
-// import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "../utils/api";
 
@@ -41,7 +40,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
-        <div className="container flex flex-col items-start justify-center gap-8 p-4 ">
+        <div className="container flex flex-col items-start justify-center gap-8 p-4 sm:w-[640px]">
           <PostTweet />
           {tweets.map((tweet) => (
             <TweetCard key={tweet.id} tweet={tweet} client={client} />
@@ -56,27 +55,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-// const AuthShowcase: React.FC = () => {
-//   const { data: sessionData } = useSession();
-
-//   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-//     undefined, // no input
-//     { enabled: sessionData?.user !== undefined }
-//   );
-
-//   return (
-//     <div className="flex flex-col items-center justify-center gap-4">
-//       <p className="text-center text-2xl text-white">
-//         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-//         {secretMessage && <span> - {secretMessage}</span>}
-//       </p>
-//       <button
-//         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-//         onClick={sessionData ? () => void signOut() : () => void signIn()}
-//       >
-//         {sessionData ? "Sign out" : "Sign in"}
-//       </button>
-//     </div>
-//   );
-// };

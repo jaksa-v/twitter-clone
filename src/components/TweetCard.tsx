@@ -107,7 +107,7 @@ export default function TweetCard({
   const hasLiked = tweet.likes.length > 0;
 
   return (
-    <div className="flex flex-col items-start justify-center gap-2">
+    <div className="flex w-full flex-col items-start justify-center gap-2">
       <div className="flex items-center justify-center gap-4">
         {tweet.author.image && tweet.author.name && (
           <Image
