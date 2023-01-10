@@ -58,6 +58,8 @@ function updateCache({
     (oldData) => {
       const newData = oldData as InfiniteData<RouterOutputs["tweet"]["list"]>;
 
+      const value = action === "like" ? 1 : -1;
+
       const newTweets = newData.pages.map((page) => {
         return {
           tweets: page.tweets.map((tweet) => {
@@ -65,6 +67,9 @@ function updateCache({
               return {
                 ...tweet,
                 likes: action === "like" ? [data.userId] : [],
+                _count: {
+                  likes: tweet._count.likes + value,
+                },
               };
             }
 
@@ -139,7 +144,7 @@ export default function TweetCard({
               }
             }}
           />
-          <span className="text-gray-400">10</span>
+          <span className="text-gray-400">{tweet._count.likes}</span>
         </div>
       </div>
     </div>
