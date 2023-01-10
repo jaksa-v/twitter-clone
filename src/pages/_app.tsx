@@ -6,6 +6,7 @@ import { api } from "../utils/api";
 
 import "../styles/globals.css";
 import { Layout } from "../components/layout";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -13,6 +14,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <Layout>
         <Component {...pageProps} />
       </Layout>

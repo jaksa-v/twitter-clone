@@ -8,6 +8,7 @@
 ## Todos
 
 - Like schema ✔️
+- don't do full invalidation upon liking/disliking a tweet
 - Don't display create tweet to unauth users
 - Design for desktop
 - Implement some other authentication
@@ -15,4 +16,4 @@
 
 ## Bugs
 
-- typescript/eslint errors in tweet.ts
+- typescript/eslint errors in tweet.ts ✔️
