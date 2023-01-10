@@ -5,7 +5,7 @@ import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-const USERS_TO_CREATE = 20;
+const USERS_TO_CREATE = 5;
 const TWEETS_MIN = 1;
 const TWEETS_MAX = 20;
 
@@ -32,14 +32,16 @@ async function run() {
     const amount = faker.datatype.number({ min: TWEETS_MIN, max: TWEETS_MAX });
 
     for (let ii = 0; ii < amount; ii++) {
-      tweets.push({
-        text: faker.lorem.sentence(),
-        author: {
-          connect: {
-            id: users[ii]?.id,
+      if (users[ii]) {
+        tweets.push({
+          text: faker.lorem.sentence(),
+          author: {
+            connect: {
+              id: users[ii]?.id,
+            },
           },
-        },
-      });
+        });
+      }
     }
   }
 
