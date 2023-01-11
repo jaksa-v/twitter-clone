@@ -7,6 +7,7 @@
 ## Todos
 
 - Don't display create tweet to unauth users ✔️
+- Open AuthModal from Navigation ✔️
 - Signed out banner
 - Handle unatuhorized error when liking unsigned - open AuthModal
 - Loading states on home page

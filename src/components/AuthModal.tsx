@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { FaDiscord, FaGoogle } from "react-icons/fa";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
-export default function AuthModal() {
-  const [showModal, setShowModal] = useState(false);
-  const { data: sessionData } = useSession();
-
-  useEffect(() => {
-    if (!sessionData) setShowModal(true);
-    else setShowModal(false);
-  }, [sessionData]);
-
+export default function AuthModal({
+  showModal,
+  setShowModal,
+}: {
+  showModal: boolean;
+  setShowModal: (showModal: boolean) => void;
+}) {
   return (
     <>
       {showModal ? (
