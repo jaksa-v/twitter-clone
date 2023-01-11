@@ -9,7 +9,7 @@ import TweetCard from "./TweetCard";
 export default function Timeline() {
   const scrollPosition = useScrollPosition();
 
-  const { data, hasNextPage, fetchNextPage, isFetching } =
+  const { data, status, hasNextPage, fetchNextPage, isFetching } =
     api.tweet.list.useInfiniteQuery(
       {
         limit: 10,
@@ -29,14 +29,25 @@ export default function Timeline() {
 
   const client = useQueryClient();
 
+  if (status === "loading")
+    return <p className="mx-auto mt-4">Loading tweets...</p>;
+
+  if (status === "error")
+    return <p className="mx-auto mt-4">Error loading tweets...</p>;
+
+  if (tweets.length === 0)
+    return <p className="mx-auto mt-4">No tweets yet...</p>;
+
   return (
     <>
       {tweets.map((tweet, index) => (
         <TweetCard key={`${tweet.id}${index}`} tweet={tweet} client={client} />
       ))}
-      {/* {!hasNextPage && (
-        <p className="text-sm text-gray-400">No more items to load</p>
-      )} */}
+      {!hasNextPage && tweets.length > 10 && (
+        <p className="mx-auto my-4 text-sm text-gray-400">
+          No more tweets to load
+        </p>
+      )}
     </>
   );
 }
