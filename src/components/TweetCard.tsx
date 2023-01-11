@@ -3,6 +3,9 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocal from "dayjs/plugin/updateLocale";
 import dayjs from "dayjs";
 import { HiHeart } from "react-icons/hi";
+import { AiOutlineRetweet } from "react-icons/ai";
+import { FaRegComment } from "react-icons/fa";
+import { RxShare2 } from "react-icons/rx";
 import type { RouterOutputs } from "../utils/api";
 import { api } from "../utils/api";
 import type { InfiniteData, QueryClient } from "@tanstack/react-query";
@@ -131,10 +134,26 @@ export default function TweetCard({
       <div>
         <p className="text-white">{tweet.text}</p>
       </div>
-      <div className="flex">
-        <div className="flex">
+      <div className="flex w-full justify-center gap-12">
+        <div className="flex items-center gap-2">
+          <FaRegComment
+            className={`cursor-pointer text-gray-400 hover:text-red-300`}
+            size="1.3rem"
+          />
+          <span className="text-gray-400">0</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <AiOutlineRetweet
+            className={`cursor-pointer text-gray-400 hover:text-red-300`}
+            size="1.5rem"
+          />
+          <span className="text-gray-400">0</span>
+        </div>
+        <div className="flex items-center gap-2">
           <HiHeart
-            className={hasLiked ? "text-red-500" : "text-gray-400"}
+            className={`cursor-pointer hover:text-red-300 ${
+              hasLiked ? "text-red-500" : "text-gray-400"
+            }`}
             size="1.5rem"
             onClick={() => {
               if (hasLiked) {
@@ -144,7 +163,13 @@ export default function TweetCard({
               }
             }}
           />
-          <span className="ml-2 text-gray-400">{tweet._count.likes}</span>
+          <span className="text-gray-400">{tweet._count.likes}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <RxShare2
+            className={`cursor-pointer text-gray-400 hover:text-red-300`}
+            size="1.3rem"
+          />
         </div>
       </div>
     </div>
