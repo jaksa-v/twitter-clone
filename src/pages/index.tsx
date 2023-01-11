@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import AuthModal from "../components/AuthModal";
 import PostTweet from "../components/PostTweet";
 import Timeline from "../components/Timeline";
 
@@ -13,6 +14,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-start">
         <div className="container flex flex-col items-start justify-center sm:w-[640px]">
+          <AuthModal />
           <PostTweet />
           <Timeline />
         </div>

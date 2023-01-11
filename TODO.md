@@ -6,11 +6,11 @@
 
 ## Todos
 
-- Don't display create tweet to unauth users
+- Don't display create tweet to unauth users ✔️
 - Signed out banner
-- Handle unatuhorized error when liking unsigned
+- Handle unatuhorized error when liking unsigned - open AuthModal
 - Loading states on home page
-- Modal for authentication
+- Modal for authentication ✔️
 
 ## Bugs
 
