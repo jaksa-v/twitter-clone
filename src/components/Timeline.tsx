@@ -31,12 +31,12 @@ export default function Timeline() {
 
   return (
     <>
-      {tweets.map((tweet) => (
-        <TweetCard key={tweet.id} tweet={tweet} client={client} />
+      {tweets.map((tweet, index) => (
+        <TweetCard key={`${tweet.id}${index}`} tweet={tweet} client={client} />
       ))}
-      {!hasNextPage && (
+      {/* {!hasNextPage && (
         <p className="text-sm text-gray-400">No more items to load</p>
-      )}
+      )} */}
     </>
   );
 }
